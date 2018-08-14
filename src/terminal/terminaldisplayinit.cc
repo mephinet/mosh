@@ -81,7 +81,7 @@ static const char *ti_str( const char *capname )
 }
 
 Display::Display( bool use_environment )
-  : has_ech( true ), has_bce( true ), has_title( true ), smcup( NULL ), rmcup( NULL )
+  : has_ech( true ), has_bce( true ), has_title( true ), has_name(true), smcup( NULL ), rmcup( NULL )
 {
   if ( use_environment ) {
     int errret = -2;
@@ -119,6 +119,7 @@ Display::Display( bool use_environment )
     };
 
     has_title = false;
+    has_name = false;
     const char *term_type = getenv( "TERM" );
     if ( term_type ) {
       for ( size_t i = 0;
@@ -129,6 +130,12 @@ Display::Display( bool use_environment )
           has_title = true;
           break;
         }
+      }
+
+      /* screen (and thus tmux) allows setting the window name too */
+      static const char * name_term_type = "screen";
+      if ( 0 == strncmp(term_type, name_term_type, strlen( name_term_type ))) {
+        has_name = true;
       }
     }
 

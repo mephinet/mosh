@@ -48,6 +48,9 @@ namespace Parser {
   class OSC_Start;
   class OSC_Put;
   class OSC_End;
+  class Screen_CS_Start;
+  class Screen_CS_Put;
+  class Screen_CS_Dispatch;
 }
 
 namespace Terminal {
@@ -87,6 +90,7 @@ namespace Terminal {
 
     std::string dispatch_chars;
     std::vector<wchar_t> OSC_string; /* only used to set the window title */
+    std::vector<wchar_t> Screen_CS_string; /* only used to set the window name */
 
     void parse_params( void );
 
@@ -113,6 +117,10 @@ namespace Terminal {
     void OSC_put( const Parser::OSC_Put *act );
     void OSC_start( const Parser::OSC_Start *act );
     void OSC_dispatch( const Parser::OSC_End *act, Framebuffer *fb );
+
+    void Screen_CS_put( const Parser::Screen_CS_Put *act );
+    void Screen_CS_start( const Parser::Screen_CS_Start *act );
+    void Screen_CS_dispatch( const Parser::Screen_CS_Dispatch *act, Framebuffer *fb );
 
     bool operator==( const Dispatcher &x ) const;
   };

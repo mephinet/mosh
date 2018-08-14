@@ -122,6 +122,19 @@ std::string Display::new_frame( bool initialized, const Framebuffer &last, const
     frame.append( '\007' );
   }
 
+  if ( has_name && f.is_name_initialized() && (
+   (!initialized)
+   || (f.get_window_name() != frame.last_frame.get_window_name()) )) {
+    frame.append("\033k");
+    const title_type &window_name( f.get_window_name() );
+    for ( title_type::const_iterator i = window_name.begin();
+          i != window_name.end();
+          i++ ) {
+      frame.append( *i );
+    }
+    frame.append("\033\\");
+  }
+
   /* has reverse video state changed? */
   if ( (!initialized)
        || (f.ds.reverse_video != frame.last_frame.ds.reverse_video) ) {

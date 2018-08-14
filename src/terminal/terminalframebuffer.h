@@ -379,9 +379,11 @@ namespace Terminal {
     rows_type rows;
     title_type icon_name;
     title_type window_title;
+    title_type window_name;
     title_type clipboard;
     unsigned int bell_count;
     bool title_initialized; /* true if the window title has been set via an OSC */
+    bool name_initialized; /* true if the window name has been set via a screen CS */
 
     row_pointer newrow( void )
     {
@@ -449,12 +451,16 @@ namespace Terminal {
     void soft_reset( void );
 
     void set_title_initialized( void ) { title_initialized = true; }
+    void set_name_initialized( void ) { name_initialized = true; }
     bool is_title_initialized( void ) const { return title_initialized; }
+    bool is_name_initialized( void ) const { return name_initialized; }
     void set_icon_name( const title_type &s ) { icon_name = s; }
     void set_window_title( const title_type &s ) { window_title = s; }
+    void set_window_name( const title_type &s ) { window_name = s; }
     void set_clipboard( const title_type &s ) { clipboard = s; }
     const title_type & get_icon_name( void ) const { return icon_name; }
     const title_type & get_window_title( void ) const { return window_title; }
+    const title_type & get_window_name( void ) const { return window_name; }
     const title_type & get_clipboard( void ) const { return clipboard; }
 
     void prefix_window_title( const title_type &s );
@@ -469,7 +475,7 @@ namespace Terminal {
 
     bool operator==( const Framebuffer &x ) const
     {
-      return ( rows == x.rows ) && ( window_title == x.window_title ) && ( clipboard  == x.clipboard ) && ( bell_count == x.bell_count ) && ( ds == x.ds );
+      return ( rows == x.rows ) && ( window_title == x.window_title ) && ( window_name == x.window_name ) && ( clipboard  == x.clipboard ) && ( bell_count == x.bell_count ) && ( ds == x.ds );
     }
   };
 }

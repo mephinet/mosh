@@ -35,18 +35,20 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <algorithm>
 
 #include "terminaldispatcher.h"
 #include "parseraction.h"
 #include "terminalframebuffer.h"
 
 using namespace Terminal;
+using namespace std;
 
 static const size_t MAXIMUM_CLIPBOARD_SIZE = 16*1024;
 
 Dispatcher::Dispatcher()
   : params(), parsed_params(), parsed( false ), dispatch_chars(),
-    OSC_string(), terminal_to_host()
+    OSC_string(), Screen_CS_string(), terminal_to_host()
 {}
 
 void Dispatcher::newparamchar( const Parser::Param *act )
@@ -246,6 +248,27 @@ void Dispatcher::OSC_start( const Parser::OSC_Start *act __attribute((unused)) )
   OSC_string.clear();
 }
 
+void Dispatcher::Screen_CS_put( const Parser::Screen_CS_Put *act )
+{
+  assert( act->char_present );
+  if ( Screen_CS_string.size() < MAXIMUM_CLIPBOARD_SIZE) {
+    Screen_CS_string.push_back( act->ch );
+  }
+}
+
+void Dispatcher::Screen_CS_start( const Parser::Screen_CS_Start *act __attribute((unused)) )
+{
+  Screen_CS_string.clear();
+}
+
+void Dispatcher::Screen_CS_dispatch ( const Parser::Screen_CS_Dispatch *act, Framebuffer *fb )
+{
+  fb->set_name_initialized();
+  int name_length = min(Screen_CS_string.size(), (size_t)256);
+  Terminal::Framebuffer::title_type newname( Screen_CS_string.begin(), Screen_CS_string.begin() + name_length );
+  fb->set_window_name( newname );
+}
+
 bool Dispatcher::operator==( const Dispatcher &x ) const
 {
   return ( params == x.params )
@@ -253,5 +276,6 @@ bool Dispatcher::operator==( const Dispatcher &x ) const
     && ( parsed == x.parsed )
     && ( dispatch_chars == x.dispatch_chars )
     && ( OSC_string == x.OSC_string )
-    && ( terminal_to_host == x.terminal_to_host );
+    && ( terminal_to_host == x.terminal_to_host )
+    && ( Screen_CS_string == x.Screen_CS_string );
 }

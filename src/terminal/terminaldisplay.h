@@ -70,6 +70,8 @@ namespace Terminal {
 
     bool has_title; /* supports window title and icon name */
 
+    bool has_name; /* supports window name */
+
     const char *smcup, *rmcup; /* enter and exit alternate screen mode */
 
     bool put_row( bool initialized, FrameState &frame, const Framebuffer &f, int frame_y, const Row &old_row, bool wrap ) const;

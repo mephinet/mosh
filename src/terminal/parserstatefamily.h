@@ -57,13 +57,14 @@ namespace Parser {
 
     OSC_String s_OSC_String;
     SOS_PM_APC_String s_SOS_PM_APC_String;
+    Screen_CS s_Screen_CS;
 
     StateFamily()
       : s_Ground(), s_Escape(), s_Escape_Intermediate(),
 	s_CSI_Entry(), s_CSI_Param(), s_CSI_Intermediate(), s_CSI_Ignore(),
 	s_DCS_Entry(), s_DCS_Param(), s_DCS_Intermediate(),
 	s_DCS_Passthrough(), s_DCS_Ignore(),
-	s_OSC_String(), s_SOS_PM_APC_String()
+	s_OSC_String(), s_SOS_PM_APC_String(), s_Screen_CS()
     {
       s_Ground.setfamily( this );
       s_Escape.setfamily( this );
@@ -79,6 +80,7 @@ namespace Parser {
       s_DCS_Ignore.setfamily( this );
       s_OSC_String.setfamily( this );
       s_SOS_PM_APC_String.setfamily( this );
+      s_Screen_CS.setfamily( this );
     }
   };
 }

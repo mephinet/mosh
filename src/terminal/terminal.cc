@@ -157,6 +157,11 @@ void Emulator::OSC_end( const Parser::OSC_End *act )
   dispatch.OSC_dispatch( act, &fb );
 }
 
+void Emulator::Screen_CS_dispatch( const Parser::Screen_CS_Dispatch *act )
+{
+  dispatch.Screen_CS_dispatch( act, &fb );
+}
+
 void Emulator::Esc_dispatch( const Parser::Esc_Dispatch *act )
 {
   /* handle 7-bit ESC-encoding of C1 control characters */

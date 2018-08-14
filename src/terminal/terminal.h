@@ -56,6 +56,9 @@ namespace Terminal {
     friend void Parser::OSC_Start::act_on_terminal( Emulator * ) const;
     friend void Parser::OSC_Put::act_on_terminal( Emulator * ) const;
     friend void Parser::OSC_End::act_on_terminal( Emulator * ) const;
+    friend void Parser::Screen_CS_Start::act_on_terminal( Emulator * ) const;
+    friend void Parser::Screen_CS_Put::act_on_terminal( Emulator * ) const;
+    friend void Parser::Screen_CS_Dispatch::act_on_terminal( Emulator * ) const;
 
     friend void Parser::UserByte::act_on_terminal( Emulator * ) const;
     friend void Parser::Resize::act_on_terminal( Emulator * ) const;
@@ -70,6 +73,7 @@ namespace Terminal {
     void execute( const Parser::Execute *act );
     void CSI_dispatch( const Parser::CSI_Dispatch *act );
     void Esc_dispatch( const Parser::Esc_Dispatch *act );
+    void Screen_CS_dispatch( const Parser::Screen_CS_Dispatch *act );
     void OSC_end( const Parser::OSC_End *act );
     void resize( size_t s_width, size_t s_height );
 

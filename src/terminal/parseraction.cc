@@ -88,6 +88,21 @@ void OSC_End::act_on_terminal( Terminal::Emulator *emu ) const
   emu->OSC_end( this );
 }
 
+void Screen_CS_Start::act_on_terminal( Terminal::Emulator *emu ) const
+{
+  emu->dispatch.Screen_CS_start( this );
+}
+
+void Screen_CS_Put::act_on_terminal( Terminal::Emulator *emu ) const
+{
+  emu->dispatch.Screen_CS_put( this );
+}
+
+void Screen_CS_Dispatch::act_on_terminal( Terminal::Emulator *emu ) const
+{
+  emu->Screen_CS_dispatch( this );
+}
+
 void UserByte::act_on_terminal( Terminal::Emulator *emu ) const
 {
   emu->dispatch.terminal_to_host.append( emu->user.input( this,

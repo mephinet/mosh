@@ -127,6 +127,22 @@ namespace Parser {
     void act_on_terminal( Terminal::Emulator *emu ) const;
   };
 
+  class Screen_CS_Start : public Action {
+  public:
+    std::string name( void ) { return std::string( "Screen_CS_Start" ); }
+    void act_on_terminal( Terminal::Emulator *emu ) const;
+  };
+  class Screen_CS_Put : public Action {
+  public:
+    std::string name( void ) { return std::string( "Screen_CS_Put" ); }
+    void act_on_terminal( Terminal::Emulator *emu ) const;
+  };
+  class Screen_CS_Dispatch : public Action {
+  public:
+    std::string name( void ) { return std::string( "Screen_CS_Dispatch" ); }
+    void act_on_terminal( Terminal::Emulator *emu ) const;
+  };
+
   class UserByte : public Action {
     /* user keystroke -- not part of the host-source state machine*/
   public:

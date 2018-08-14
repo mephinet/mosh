@@ -123,7 +123,8 @@ Transition Escape::input_state_rule( wchar_t ch ) const
        || ( ch == 0x59 )
        || ( ch == 0x5A )
        || ( ch == 0x5C )
-       || ( (0x60 <= ch) && (ch <= 0x7E) ) ) {
+       || ( (0x60 <= ch) && (ch <= 0x6A) )
+       || ( (0x6C <= ch) && (ch <= 0x7E) ) ) {
     return Transition( shared::make_shared< Esc_Dispatch >(), &family->s_Ground );
   }
 
@@ -141,6 +142,10 @@ Transition Escape::input_state_rule( wchar_t ch ) const
 
   if ( (ch == 0x58) || (ch == 0x5E) || (ch == 0x5F) ) {
     return Transition( &family->s_SOS_PM_APC_String );
+  }
+
+  if ( ch == 0x6B ) {
+    return Transition( &family->s_Screen_CS );
   }
 
   return Transition();
@@ -387,4 +392,27 @@ Transition SOS_PM_APC_String::input_state_rule( wchar_t ch ) const
   }
 
   return Transition();
+}
+
+ActionPointer Screen_CS::enter( void ) const
+{
+  return shared::make_shared< Screen_CS_Start >();
+}
+
+Transition Screen_CS::input_state_rule( wchar_t ch ) const
+{
+  if ( (0x20 <= ch) && (ch <= 0x7F) ) {
+    return Transition( shared::make_shared< Screen_CS_Put >() );
+  }
+
+  if ( ch == 0x9C ) {
+    return Transition( &family->s_Ground );
+  }
+
+  return Transition();
+}
+
+ActionPointer Screen_CS::exit( void ) const
+{
+  return shared::make_shared< Screen_CS_Dispatch >();
 }
